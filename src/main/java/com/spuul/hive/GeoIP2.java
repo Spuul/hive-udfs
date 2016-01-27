@@ -144,9 +144,11 @@ public class GeoIP2 extends GenericUDF {
 
                         switch (databaseType) {
                                 case "GeoIP2-Country":
+                                case "GeoLite2-Country":
                                         retVal = getVal(attributeName, reader.country(ipAddress));
                                         break;
                                 case "GeoIP2-City":
+                                case "GeoLite2-City":
                                         retVal = getVal(attributeName, reader.city(ipAddress));
                                         break;
                                 case "GeoIP2-Anonymous-IP":
