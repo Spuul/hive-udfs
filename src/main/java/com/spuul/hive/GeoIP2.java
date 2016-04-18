@@ -169,7 +169,7 @@ public class GeoIP2 extends GenericUDF {
                         return new Text(retVal);
                 }
                 catch(Exception e) {
-                        throw new UnsupportedOperationException(e.getMessage());
+                        return new Text("");
                 }
         }
 
