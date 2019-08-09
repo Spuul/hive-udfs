@@ -86,6 +86,7 @@ value = "_FUNC_(ip,attribute,database) - looks a property for an IP address from
 public class GeoIP2 extends GenericUDF {
 
         private ObjectInspectorConverters.Converter[] converters;
+        private DatabaseReader reader;
 
         /**
          * Initialize this UDF.
@@ -129,16 +130,18 @@ public class GeoIP2 extends GenericUDF {
                 String attributeName = ((Text) converters[1].convert(arguments[1].get())).toString();
                 String databaseName = ((Text) converters[2].convert(arguments[2].get())).toString();
 
-                //Just in case there are more than one database filename attached.
-                //We will just assume that two file with same filename are identical.
-                File database = new File(databaseName);
-
                 String retVal = "";
 
                 try {
-                        // This creates the DatabaseReader object, which should be reused across
-                        // lookups.
-                        DatabaseReader reader = new DatabaseReader.Builder(database).build();
+                        if (reader == null) {
+                                //Just in case there are more than one database filename attached.
+                                //We will just assume that two file with same filename are identical.
+                                File database = new File(databaseName);
+                                // This creates the DatabaseReader object, which should be reused across
+                                // lookups.
+                                reader = new DatabaseReader.Builder(database).build();
+                        }
+
                         String databaseType = reader.getMetadata().getDatabaseType();
                         InetAddress ipAddress = InetAddress.getByName(ip);
 
